@@ -137,7 +137,12 @@ class BookPeckersApp {
         });
 
         // Navigation controls
-        document.getElementById('newSearchBtn').addEventListener('click', () => this.showSearchSection());
+        document.getElementById('newSearchBtn').addEventListener('click', () => this.confirmNewSearch());
+
+        // Report action buttons
+        document.getElementById('copyReportBtn').addEventListener('click', () => this.copyReportAsMarkdown());
+        document.getElementById('saveReportBtn').addEventListener('click', () => this.showSaveComingSoon());
+        document.getElementById('goTopBtn').addEventListener('click', () => this.scrollToTop());
 
         // Add keyboard shortcuts
         document.addEventListener('keydown', (e) => {
@@ -561,6 +566,14 @@ Important requirements:
     displayBooks(books) {
         this.hideLoading();
         
+        // Update the books heading with the current topic
+        const booksHeading = document.getElementById('booksHeading');
+        if (this.currentTopic) {
+            booksHeading.textContent = `Recommended Books for You - ${this.currentTopic}`;
+        } else {
+            booksHeading.textContent = 'Recommended Books for You';
+        }
+        
         const booksGrid = document.getElementById('booksGrid');
         booksGrid.innerHTML = '';
 
@@ -821,6 +834,89 @@ Respond with ONLY a JSON array of the VALID books (exact same format). If all bo
                 throw new Error('api_error');
             }
         }
+    }
+
+    // Report action methods
+    copyReportAsMarkdown() {
+        if (this.currentBookIndex >= 0 && this.currentBooks[this.currentBookIndex]) {
+            const book = this.currentBooks[this.currentBookIndex];
+            let markdownContent = `# ${book.title}\n\n*by ${book.author}*\n\n`;
+            
+            if (book.analysis) {
+                markdownContent += book.analysis;
+            } else {
+                markdownContent += 'Analysis not available.';
+            }
+
+            // Copy to clipboard
+            navigator.clipboard.writeText(markdownContent).then(() => {
+                this.showNotification('Report copied to clipboard!', 'success');
+                this.trackEvent('report_copied', {
+                    book_title: book.title,
+                    book_author: book.author
+                });
+            }).catch(() => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = markdownContent;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                this.showNotification('Report copied to clipboard!', 'success');
+            });
+        }
+    }
+
+    showSaveComingSoon() {
+        this.showNotification('Save feature coming soon! For now, use Copy Report to save the content.', 'info');
+        this.trackEvent('save_button_clicked');
+    }
+
+    scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+        this.trackEvent('scroll_to_top_clicked');
+    }
+
+    confirmNewSearch() {
+        if (this.currentBooks.length > 0) {
+            if (confirm('Start a new search? This will clear your current book recommendations.')) {
+                this.showSearchSection();
+            }
+        } else {
+            this.showSearchSection();
+        }
+    }
+
+    showNotification(message, type = 'info') {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `notification notification-${type}`;
+        notification.innerHTML = `
+            <div class="notification-content">
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                <span>${message}</span>
+            </div>
+        `;
+
+        // Add to page
+        document.body.appendChild(notification);
+
+        // Animate in
+        setTimeout(() => notification.classList.add('show'), 100);
+
+        // Remove after 3 seconds
+        setTimeout(() => {
+            notification.classList.remove('show');
+            setTimeout(() => {
+                if (document.body.contains(notification)) {
+                    document.body.removeChild(notification);
+                }
+            }, 300);
+        }, 3000);
     }
 }
 

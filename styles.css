@@ -1184,3 +1184,127 @@ input:focus {
     margin-bottom: 0.8rem;
     line-height: 1.6;
 }
+
+.report-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 2px solid rgba(99, 102, 241, 0.1);
+    flex-wrap: wrap;
+}
+
+.report-actions button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    min-width: 120px;
+    justify-content: center;
+}
+
+.report-actions button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: rgba(156, 163, 175, 0.3);
+    color: rgba(107, 114, 128, 0.7);
+}
+
+.report-actions button:disabled:hover {
+    transform: none;
+    background: rgba(156, 163, 175, 0.3);
+}
+
+.report-actions button i {
+    font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+    .report-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .report-actions button {
+        width: 100%;
+        max-width: 200px;
+    }
+}
+
+/* Notification System */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: var(--border-radius);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    padding: 1rem 1.25rem;
+    z-index: 10000;
+    transform: translateX(100%);
+    transition: all 0.3s ease;
+    max-width: 350px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.notification.show {
+    transform: translateX(0);
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.notification-content i {
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.notification-success {
+    border-left-color: #10b981;
+}
+
+.notification-success .notification-content i {
+    color: #10b981;
+}
+
+.notification-error {
+    border-left-color: #ef4444;
+}
+
+.notification-error .notification-content i {
+    color: #ef4444;
+}
+
+.notification-info {
+    border-left-color: #3b82f6;
+}
+
+.notification-info .notification-content i {
+    color: #3b82f6;
+}
+
+.notification-content span {
+    color: var(--text-dark);
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+    .notification {
+        right: 10px;
+        left: 10px;
+        max-width: none;
+        transform: translateY(-100%);
+    }
+    
+    .notification.show {
+        transform: translateY(0);
+    }
+}

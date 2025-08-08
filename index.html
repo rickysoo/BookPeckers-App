@@ -78,7 +78,7 @@
         <section class="books-section" id="booksSection" style="display: none;">
             <div class="container">
                 <div class="section-header">
-                    <h2>Recommended Books for You</h2>
+                    <h2 id="booksHeading">Recommended Books for You</h2>
                     <button class="btn-back" id="newSearchBtn">
                         <i class="fas fa-search"></i>
                         New Search
@@ -104,6 +104,22 @@
                     
                     <div class="report-content" id="reportContent">
                         <div class="loading-placeholder">Loading full analysis...</div>
+                    </div>
+                    
+                    <!-- Report Action Buttons -->
+                    <div class="report-actions">
+                        <button id="copyReportBtn" class="btn-secondary" title="Copy report as markdown">
+                            <i class="fas fa-copy"></i>
+                            Copy Report
+                        </button>
+                        <button id="saveReportBtn" class="btn-secondary" title="Save report (coming soon)" disabled>
+                            <i class="fas fa-bookmark"></i>
+                            Save
+                        </button>
+                        <button id="goTopBtn" class="btn-secondary" title="Scroll to top">
+                            <i class="fas fa-arrow-up"></i>
+                            Go Top
+                        </button>
                     </div>
                 </div>
             </div>

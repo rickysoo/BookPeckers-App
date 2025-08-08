@@ -618,17 +618,13 @@ Important requirements:
         
         // Use prefetched analysis (no loading needed!)
         if (book.analysis) {
-            // Secure text rendering without HTML injection
+            // Secure HTML rendering with proper headings
             const reportContent = document.getElementById('reportContent');
-            reportContent.textContent = ''; // Clear existing content
+            reportContent.innerHTML = ''; // Clear existing content
             
-            // Create formatted analysis as text blocks
-            const analysisText = this.formatAnalysisToText(book.analysis);
-            const pre = document.createElement('pre');
-            pre.style.whiteSpace = 'pre-wrap';
-            pre.style.fontFamily = 'inherit';
-            pre.textContent = analysisText;
-            reportContent.appendChild(pre);
+            // Create safely formatted HTML
+            const formattedHTML = this.formatAnalysisToSecureHTML(book.analysis);
+            reportContent.appendChild(formattedHTML);
         } else {
             const reportContent = document.getElementById('reportContent');
             reportContent.textContent = 'Analysis not available for this book.';
@@ -638,6 +634,67 @@ Important requirements:
         this.showBookReport();
     }
 
+    formatAnalysisToSecureHTML(analysis) {
+        // Create a container element
+        const container = document.createElement('div');
+        container.className = 'analysis-content';
+        
+        // Split analysis into paragraphs and sections
+        const sections = analysis.split(/\*\*(Complete Synopsis|Key Themes and Concepts|Chapter Outline|Critical Review|Who Should Read This|Key Takeaways)\*\*/gi);
+        
+        for (let i = 0; i < sections.length; i++) {
+            const section = sections[i].trim();
+            if (!section) continue;
+            
+            // Check if this is a heading
+            if (/^(Complete Synopsis|Key Themes and Concepts|Chapter Outline|Critical Review|Who Should Read This|Key Takeaways)$/i.test(section)) {
+                const heading = document.createElement('h3');
+                heading.textContent = section;
+                heading.style.color = '#6366f1';
+                heading.style.marginTop = '2rem';
+                heading.style.marginBottom = '1rem';
+                heading.style.fontSize = '1.25rem';
+                heading.style.fontWeight = '600';
+                container.appendChild(heading);
+            } else {
+                // Handle content paragraphs
+                const paragraphs = section.split(/\n\s*\n/);
+                paragraphs.forEach(para => {
+                    para = para.trim();
+                    if (!para) return;
+                    
+                    // Handle bold text within paragraphs
+                    const p = document.createElement('p');
+                    p.style.marginBottom = '1rem';
+                    p.style.lineHeight = '1.6';
+                    
+                    // Split by bold markers and process
+                    const parts = para.split(/\*\*(.*?)\*\*/g);
+                    for (let j = 0; j < parts.length; j++) {
+                        if (j % 2 === 0) {
+                            // Regular text
+                            if (parts[j]) {
+                                const textNode = document.createTextNode(parts[j]);
+                                p.appendChild(textNode);
+                            }
+                        } else {
+                            // Bold text
+                            const bold = document.createElement('strong');
+                            bold.textContent = parts[j];
+                            bold.style.color = '#4f46e5';
+                            p.appendChild(bold);
+                        }
+                    }
+                    
+                    container.appendChild(p);
+                });
+            }
+        }
+        
+        return container;
+    }
+
+    // Keep the old method for backward compatibility
     formatAnalysisToText(analysis) {
         // Secure text formatting without HTML injection risks
         let formatted = analysis;

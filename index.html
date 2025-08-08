@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookPeckers - Find Your Best Read | Book Discovery & Learning Platform</title>
+    <meta name="description" content="BookPeckers - Find Your Best Read. Intelligent book recommendations, instant summaries, and detailed analysis for every learning topic. Find perfect books tailored to your interests.">
+    
+    <!-- Content Security Policy for enhanced security -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' https://openrouter.ai https://www.google-analytics.com; frame-src 'none'; object-src 'none'; base-uri 'self';">
+    
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z0NC5LEY4H"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-Z0NC5LEY4H');
+    </script>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-brand">
+                    <i class="fas fa-book-open"></i>
+                    <span>BookPeckers</span>
+                    <span class="tagline">Find Your Best Read</span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main-container">
+        <!-- Search Section -->
+        <section class="search-section" id="searchSection">
+            <div class="hero-content">
+                <h1>What would you like to learn today?</h1>
+                <p>Enter your interests and discover perfect books instantly</p>
+                
+                <div class="search-container">
+                    <div class="input-group">
+                        <input type="text" id="learningTopic" placeholder="e.g., Machine Learning, History, Cooking, Philosophy..." autocomplete="off">
+                        <button id="findBooksBtn" class="btn-primary">
+                            <i class="fas fa-search"></i>
+                            Find Books
+                        </button>
+                    </div>
+                    <div class="search-error" id="searchError" style="display: none;">
+                        <p id="searchErrorMessage"></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Loading Section -->
+        <section class="loading-section" id="loadingSection" style="display: none;">
+            <div class="loading-content">
+                <div class="animated-spinner">
+                    <div class="spinner-ring"></div>
+                    <div class="spinner-ring"></div>
+                    <div class="spinner-ring"></div>
+                </div>
+                <p>Finding the perfect books...</p>
+                <div class="loading-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Books Section -->
+        <section class="books-section" id="booksSection" style="display: none;">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Recommended Books for You</h2>
+                    <button class="btn-back" id="newSearchBtn">
+                        <i class="fas fa-search"></i>
+                        New Search
+                    </button>
+                </div>
+                
+                <div class="books-grid" id="booksGrid">
+                    <!-- Books will be dynamically loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Full Book Report Section -->
+        <section class="book-report-section" id="bookReportSection" style="display: none;">
+            <div class="container">
+                <div class="report-card" id="reportCard">
+                    <div class="report-header">
+                        <h3 id="reportBookTitle">Complete Book Analysis</h3>
+                        <div class="report-meta">
+                            <span id="reportAuthor" class="author">Author Name</span>
+                        </div>
+                    </div>
+                    
+                    <div class="report-content" id="reportContent">
+                        <div class="loading-placeholder">Loading full analysis...</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 BookPeckers. Find Your Best Read.</p>
+        </div>
+    </footer>
+
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
